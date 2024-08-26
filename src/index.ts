@@ -1,23 +1,11 @@
-import 'dotenv/config'
-import MiduClient from './lib/MiduClient'
+import "dotenv/config";
+import { Client, type ParseClient } from "seyfert";
 
-// eslint-disable-next-line no-unused-vars
-const client = new MiduClient()
+const client = new Client();
 
-client.on('messageCreate', async (message) => {
-  if (message.author.bot) return
-  const prefix = `${process.env.DISCORD_PREFIX}`
-  if (!message.content.startsWith(prefix)) return
-  const args = message.content.slice(prefix.length).trim().split(/ +/g)
-  const commandName = args?.shift()?.toLowerCase()
-  const command = client.commandHandler.modules.find(m => m.aliases.includes(`${commandName}`))
-  if (!command) return
+// This will start the connection with the gateway and load commands, events, components and langs
+client.start().then(() => client.uploadCommands());
 
-  try {
-    command.client = client
-    command.handler = client.commandHandler
-    command.run(message, args)
-  } catch (error) {
-    console.error(error)
-  }
-})
+declare module "seyfert" {
+	interface UsingClient extends ParseClient<Client<true>> {}
+}

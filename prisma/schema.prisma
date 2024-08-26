@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Attachment {
+  id         String   @id @default(uuid())
+  name       String
+  url        String
+  message_id String
+  channel_id String
+  strike_id  String?
+  strike     Strike?  @relation(fields: [strike_id], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Strike {
+  id          String       @id @default(uuid())
+  infractor   User         @relation(fields: [infractorId], references: [id], name: "Infractor")
+  infractorId String
+  author      User         @relation(fields: [authorId], references: [id], name: "Author")
+  authorId    String
+  reason      String
+  files       Attachment[]
+  type        String //'warn' | 'mute' | 'ban' | 'kick'
+  duration    Int? // in milliseconds
+  prompt      String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model User {
+  id                String   @id
+  username          String
+  avatar_url        String
+  strikes_infractor Strike[] @relation("Infractor")
+  strikes_author    Strike[] @relation("Author")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}

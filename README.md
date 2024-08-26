@@ -42,6 +42,15 @@ or copy [.env.example](https://github.com/MiduBot/bot/blob/develop/.env.example)
 cp .env.example .env
 ```
 
+1. To run use:
+```
+pnpm run build:dev
+```
+and
+```
+start:dev
+```
+
 ## 🙌 Contributing:
 
 - [Hyuuh](https://github.com/Hyuuh).

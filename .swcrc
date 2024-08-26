@@ -1,0 +1,25 @@
+{
+	"$schema": "https://swc.rs/schema.json",
+	"jsc": {
+		"parser": {
+			"syntax": "typescript",
+			"decorators": true
+		},
+		"baseUrl": "./",
+		"paths": {
+			"@/*": ["./src/*"]
+		}
+	},
+	"module": {
+		"type": "commonjs",
+		"importInterop": "swc",
+
+		// These are defaults.
+		"strict": false,
+		"strictMode": true,
+		"lazy": false,
+		"noInterop": false
+	},
+
+	"minify": true
+}
